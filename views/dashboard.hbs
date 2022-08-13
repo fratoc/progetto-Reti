@@ -1,0 +1,122 @@
+
+<style>
+    body{
+        width: 100%;
+        height: 100%;
+        background-image: url(https://www.panorama.it/media-library/blog.jpg?id=20545796&width=300);
+        background-size: 8%;
+    }
+</style>
+
+<br>
+<br>
+
+<h3 class="center" style="font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0 auto; color:rgb(255, 85, 0); background: rgb(86, 85, 81); padding: 2px; padding-top: 1px; border: 2px solid rgb(255, 85, 0); border-radius: 25px;">
+    Welcome {{name}}
+</h3>
+
+<br>
+<br>
+{{#if stories}}
+<div class="section">
+    <table class="striped" style="background-color: rgb(73, 63, 63) ;">
+        <thead>
+            <tr>
+                <th></th>
+                <th>
+                    <h5 style="color:white; border: 2px solid rgb(255, 85, 0); border-radius: 25px; width:250px; padding: 5px 5px 5px 5px;">
+                        Here are your stories:
+                    </h5>
+                </th>
+            </tr>
+
+            <tr>
+
+                <th class="center" style="margin: 0 auto; color:rgb(227, 74, 18) ;" > Title</th>
+                <th class="center" style="margin: 0 auto; color:rgb(227, 74, 18) ;">  Date</th>
+                <th class="center" style="margin: 0 auto; color:rgb(227, 74, 18) ;"> Status</th>
+                <th class="center" style="margin: 0 auto; color:rgb(227, 74, 18) ;">  Edit</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {{#each stories}}
+            <tr style="color:white">
+                <td class="center" style="margin: 0 auto;"><a href="/stories/{{_id}}" style="color:rgb(12, 250, 190) ">{{title}}</a></td>
+                <td class="center" style="margin: 0 auto;" style="font-size:medium">{{formatDate createdAt 'MMMM Do YYYY, h:mm:ss a'}}</td>
+                <td class="center" style="margin: 0 auto;" style="font-size:medium"><span class="dash-status">{{status}}</span></td>
+                <td>
+                    <a href="/stories/edit/{{_id}}" class="btn btn-float">
+                        <i class="fas fa-edit"></i>
+                    </a>
+
+                    <form action="/stories/{{_id}}" method="POST" id="delete-form">
+                        <input type="hidden" name="_method" value="DELETE">
+                        <button type="submit" class="btn red" style="margin-top: 8px;">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </form>
+                </td>
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
+
+
+</div>
+{{else}}
+    <p><h4>you have not created any stories</h4></p>
+{{/if}}
+
+
+
+<!-- INIZIAL
+
+<h6>Dashboard</h6>
+<br>
+<br>
+<div class="container">
+    <h3>Welcome {{name}}</h3>
+    <p>Here are your stories:</p>
+</div>
+<br>
+{{#if stories}}
+<div class="section">
+    <table class="striped">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Date</th>
+                <th>Status</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each stories}}
+            <tr>
+                <td><a href="/stories/{{_id}}">{{title}}</a></td>
+                <td>{{formatDate createdAt 'MMMM Do YYYY, h:mm:ss a'}}</td>
+                <td><span class="dash-status">{{status}}</span></td>
+                <td>
+                    <a href="/stories/edit/{{_id}}" class="btn btn-float">
+                        <i class="fas fa-edit"></i>
+                    </a>
+
+                    <form action="/stories/{{_id}}" method="POST" id="delete-form">
+                        <input type="hidden" name="_method" value="DELETE">
+                        <button type="submit" class="btn red" style="margin-top: 8px;">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </form>
+                </td>
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
+{{else}}
+    <p><h4>you have not created any stories</h4></p>
+{{/if}}
+
+
+-->
+
