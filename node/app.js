@@ -113,6 +113,20 @@ app.use('/stories', require('./routes/stories'))
 
 
 
+
+/* hhttps */
+/*
+const server = https.createServer({
+  key: fs.readFileSync('security/key.pem'),
+  cert: fs.readFileSync('security/cert.pem')
+}, app);
+
+server.addListener('upgrade',(req, res, head) => console.log('UPGRADE:', req.url));
+*/
+
+
 const PORT = process.env.PORT || 3000
 
 app.listen(PORT, console.log(`Server running in ${process.env.NODE_ENV} mode on port ${PORT}`))
+
+//https://64a7dd3f873079.lhrtunnel.link

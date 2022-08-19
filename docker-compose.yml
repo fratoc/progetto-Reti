@@ -1,0 +1,22 @@
+version: "3.8"
+
+services:
+
+#   nginx:
+#     build: "./nginx"
+#     container_name: "nginx"
+#     ports:
+#       - 3000:3000  #mappo la porta 3000 (del server node) nella porta 3000 --> sito disponibile sulla porta 4000
+# #    networks:
+# #      - app
+#     depends_on:
+#       - node
+
+
+  node:
+    build: "./node"
+    container_name: "node"
+    ports:
+      - 3000:3000
+
+
