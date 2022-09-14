@@ -1,0 +1,171 @@
+<style>
+    body{
+        width: 100%;
+        height: 100%;
+        background-image: url(https://www.panorama.it/media-library/blog.jpg?id=20545796&width=300);
+        background-size: 8%;
+    }
+</style>
+
+<br>
+<br>
+
+<h3 class="center" style="font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0 auto; color:rgb(255, 85, 0); background: rgb(86, 85, 81); padding: 2px; padding-top: 1px; border: 2px solid rgb(255, 85, 0); border-radius: 25px;">
+    Your calendar
+</h3>
+
+{{!-- <h3 class="center" style="font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0 auto; color:rgb(255, 85, 0); background: rgb(86, 85, 81); padding: 2px; padding-top: 1px; border: 2px solid rgb(255, 85, 0); border-radius: 25px;"></h3> --}}
+<iframe src="https://calendar.google.com/calendar/embed?height=600&wkst=2&bgcolor=%23565551&ctz=Europe%2FRome&showTitle=0&showDate=1&showPrint=0&showTabs=1&showCalendars=1&showTz=0&src=cGVycm9uZS4xODgxMDA0QHN0dWRlbnRpLnVuaXJvbWExLml0&src=YWRkcmVzc2Jvb2sjY29udGFjdHNAZ3JvdXAudi5jYWxlbmRhci5nb29nbGUuY29t&src=Y181b2RmbWE0bW9qdjZwamVvN2M4bHFvMTRnb0Bncm91cC5jYWxlbmRhci5nb29nbGUuY29t&src=Y19hN3FyNmE0MGhpNzhpdWgybzdkcjNnNG9zOEBncm91cC5jYWxlbmRhci5nb29nbGUuY29t&src=Y19jbGFzc3Jvb21mZTQ2NjM4N0Bncm91cC5jYWxlbmRhci5nb29nbGUuY29t&src=dW5pcm9tYTEuaXRfY2xhc3Nyb29tMzQ5ZTE3MTRAZ3JvdXAuY2FsZW5kYXIuZ29vZ2xlLmNvbQ&src=aXQuaXRhbGlhbiNob2xpZGF5QGdyb3VwLnYuY2FsZW5kYXIuZ29vZ2xlLmNvbQ&src=dW5pcm9tYTEuaXRfY2xhc3Nyb29tMTA0NmE2ODBAZ3JvdXAuY2FsZW5kYXIuZ29vZ2xlLmNvbQ&src=Y19jbGFzc3Jvb21lMTgzYWQxM0Bncm91cC5jYWxlbmRhci5nb29nbGUuY29t&src=Y19jbGFzc3Jvb205ZTc3Yzg1ZUBncm91cC5jYWxlbmRhci5nb29nbGUuY29t&src=Y19jbGFzc3Jvb21hZWIwMzI1ZkBncm91cC5jYWxlbmRhci5nb29nbGUuY29t&src=Y19jbGFzc3Jvb20yOWViYTg1MkBncm91cC5jYWxlbmRhci5nb29nbGUuY29t&src=Y19jbGFzc3Jvb21lMmNlYmMxMUBncm91cC5jYWxlbmRhci5nb29nbGUuY29t&color=%23039BE5&color=%2333B679&color=%23D81B60&color=%238E24AA&color=%23202124&color=%230047a8&color=%230B8043&color=%23b80672&color=%230047a8&color=%230047a8&color=%230047a8&color=%23137333&color=%230047a8" style="border-width:0" width="1075" height="600" frameborder="0" scrolling="no"></iframe>
+{{!-- </h3> --}}
+
+<h3 class="center" style="font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0 auto; color:rgb(255, 85, 0); background: rgb(86, 85, 81); padding: 2px; padding-top: 1px; border: 2px solid rgb(255, 85, 0); border-radius: 25px;"></h3>
+Events in your calendar
+</h3>
+<h3>
+
+    <!--Add buttons to initiate auth sequence and sign out-->
+    <button id="authorize_button" onclick="handleAuthClick()">Authorize</button>
+    <button id="signout_button" onclick="handleSignoutClick()">Sign Out</button>
+
+    <pre id="content" style="white-space: pre-wrap;"></pre>
+
+    <script type="text/javascript">
+      /* exported gapiLoaded */
+      /* exported gisLoaded */
+      /* exported handleAuthClick */
+      /* exported handleSignoutClick */
+
+      // TODO(developer): Set to client ID and API key from the Developer Console
+      const CLIENT_ID = '291762622727-9mmon5vkmno9funvcnmo0c4tc67cnolf.apps.googleusercontent.com';
+      const API_KEY = 'AIzaSyAznqYujjYQq-JFmMy-oYLa_6o6sD4GyKY';
+
+      // Discovery doc URL for APIs used by the quickstart
+      const DISCOVERY_DOC = 'https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest';
+
+      // Authorization scopes required by the API; multiple scopes can be
+      // included, separated by spaces.
+      const SCOPES = 'https://www.googleapis.com/auth/calendar.readonly';
+
+      let tokenClient;
+      let gapiInited = false;
+      let gisInited = false;
+
+      document.getElementById('authorize_button').style.visibility = 'hidden';
+      document.getElementById('signout_button').style.visibility = 'hidden';
+
+      /**
+       * Callback after api.js is loaded.
+       */
+      function gapiLoaded() {
+        gapi.load('client', intializeGapiClient);
+      }
+
+      /**
+       * Callback after the API client is loaded. Loads the
+       * discovery doc to initialize the API.
+       */
+      async function intializeGapiClient() {
+        await gapi.client.init({
+          apiKey: API_KEY,
+          discoveryDocs: [DISCOVERY_DOC],
+        });
+        gapiInited = true;
+        maybeEnableButtons();
+      }
+
+      /**
+       * Callback after Google Identity Services are loaded.
+       */
+      function gisLoaded() {
+        tokenClient = google.accounts.oauth2.initTokenClient({
+          client_id: CLIENT_ID,
+          scope: SCOPES,
+          callback: '', // defined later
+        });
+        gisInited = true;
+        maybeEnableButtons();
+      }
+
+      /**
+       * Enables user interaction after all libraries are loaded.
+       */
+      function maybeEnableButtons() {
+        if (gapiInited && gisInited) {
+          document.getElementById('authorize_button').style.visibility = 'visible';
+        }
+      }
+
+      /**
+       *  Sign in the user upon button click.
+       */
+      function handleAuthClick() {
+        tokenClient.callback = async (resp) => {
+          if (resp.error !== undefined) {
+            throw (resp);
+          }
+          document.getElementById('signout_button').style.visibility = 'visible';
+          document.getElementById('authorize_button').innerText = 'Refresh';
+          await listUpcomingEvents();
+        };
+
+        if (gapi.client.getToken() === null) {
+          // Prompt the user to select a Google Account and ask for consent to share their data
+          // when establishing a new session.
+          tokenClient.requestAccessToken({prompt: 'consent'});
+        } else {
+          // Skip display of account chooser and consent dialog for an existing session.
+          tokenClient.requestAccessToken({prompt: ''});
+        }
+      }
+
+      /**
+       *  Sign out the user upon button click.
+       */
+      function handleSignoutClick() {
+        const token = gapi.client.getToken();
+        if (token !== null) {
+          google.accounts.oauth2.revoke(token.access_token);
+          gapi.client.setToken('');
+          document.getElementById('content').innerText = '';
+          document.getElementById('authorize_button').innerText = 'Authorize';
+          document.getElementById('signout_button').style.visibility = 'hidden';
+        }
+      }
+
+      /**
+       * Print the summary and start datetime/date of the next ten events in
+       * the authorized user's calendar. If no events are found an
+       * appropriate message is printed.
+       */
+      async function listUpcomingEvents() {
+        let response;
+        try {
+          const request = {
+            'calendarId': 'primary',
+            'timeMin': (new Date()).toISOString(),
+            'showDeleted': false,
+            'singleEvents': true,
+            'maxResults': 10,
+            'orderBy': 'startTime',
+          };
+          response = await gapi.client.calendar.events.list(request);
+        } catch (err) {
+          document.getElementById('content').innerText = err.message;
+          return;
+        }
+
+        const events = response.result.items;
+        if (!events || events.length == 0) {
+          document.getElementById('content').innerText = 'No events found.';
+          return;
+        }
+        // Flatten to string to display
+        const output = events.reduce(
+            (str, event) => `${str}${event.summary} (${event.start.dateTime || event.start.date})\n`,
+            'Events:\n');
+        document.getElementById('content').innerText = output;
+      }
+    </script>
+    <script async defer src="https://apis.google.com/js/api.js" onload="gapiLoaded()"></script>
+    <script async defer src="https://accounts.google.com/gsi/client" onload="gisLoaded()"></script>
+  </h3>
