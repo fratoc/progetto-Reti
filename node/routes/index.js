@@ -32,11 +32,16 @@ router.get('/dashboard', ensureAuth, async (req, res) => {
 // @desc    Calendar
 // @route   GET /calendar
 router.get('/calendar', ensureAuth, (req, res) => {
-  res.render('calendar', {
-    layout: 'calendar',
-  })
+  res.render('calendar')
 })
 
+// @desc    News
+// @route   GET /news
+router.get('/news', (req, res) => {
+  res.render('news', {
+    layout: 'news',
+  })
+})
 
 module.exports = router
 
