@@ -38,9 +38,7 @@ router.get('/calendar', ensureAuth, (req, res) => {
 // @desc    News
 // @route   GET /news
 router.get('/news', (req, res) => {
-  res.render('news', {
-    layout: 'news',
-  })
+  res.render('news')
 })
 
 module.exports = router

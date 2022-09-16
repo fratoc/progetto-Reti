@@ -12,7 +12,13 @@
         background-image: url(https://www.panorama.it/media-library/blog.jpg?id=20545796&width=300);
         background-size: 8%;
     }
-</style>
+    .news{
+        width: 100%;
+        height: 100%;
+        background-image: url(https://www.pixelstalk.net/wp-content/uploads/2016/09/All-White-Background-for-Desktop.jpg);
+        background-size: 8%;
+    }
+    </style>
 </head>
 <body>
     <h3 class="center" style="font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0 auto; color:rgb(255, 85, 0); background: rgb(86, 85, 81); padding: 2px; padding-top: 1px; border: 2px solid rgb(255, 85, 0); border-radius: 25px;">
@@ -38,24 +44,37 @@ function httpGet(theUrl) {
     if(newsArray[i]=="\"url\"")
         document.getElementById("ne").innerHTML += "Read full story to: "+newsArray[i+1].replaceAll('"','')+"<br/>"+"<br/>"; 
  }*/
- for(var i=0;i<40;i++){
+ for(var i=0;i<20;i++){
+    let tempString="";
+    tempString += "<div class=\"news\">"; 
+
     var numInizio = newsString.search('title');
     newsString = newsString.substring(numInizio);
     var numFine = newsString.search('\",');
-    document.getElementById("newsUpdate").innerHTML += "<b>"+newsString.substring(8,numFine)+"</b>"+"<br/>"; 
+    tempString += "<b>"+newsString.substring(8,numFine)+"</b>"+"<br/>"; 
     newsString = newsString.substring(numFine);
 
     var numInizio = newsString.search('description');
     newsString = newsString.substring(numInizio);
     var numFine = newsString.search('\",');
-    document.getElementById("newsUpdate").innerHTML += newsString.substring(14,numFine)+"<br/>"; 
+    tempString += newsString.substring(14,numFine)+"<br/>"; 
     newsString = newsString.substring(numFine);
 
     var numInizio = newsString.search('url');
     newsString = newsString.substring(numInizio);
     var numFine = newsString.search('\",');
-    document.getElementById("newsUpdate").innerHTML += "<a href="+newsString.substring(6,numFine)+">Leggi di più su questa storia<a>"+"<br/>"+"<br/>"; 
+    tempString += "<a href="+newsString.substring(6,numFine)+">Leggi di più su questa storia<a>"+"<br/>"; 
     newsString = newsString.substring(numFine);
+
+    /*var numInizio = newsString.search('urlToImage');
+    newsString = newsString.substring(numInizio);
+    var numFine = newsString.search('\",');
+    tempString = "<img src=\""+newsString.substring(13,numFine)+"\" width=\"50\" height=\"60\">"+tempString; 
+    newsString = newsString.substring(numFine);*/
+
+    tempString += "</div><br/>"; 
+
+    document.getElementById("newsUpdate").innerHTML+=tempString;
  }
 
 </script>
