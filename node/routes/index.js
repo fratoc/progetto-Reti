@@ -41,5 +41,11 @@ router.get('/news', (req, res) => {
   res.render('news')
 })
 
+// @desc    About Us section
+// @route   GET /about
+router.get('/about', (req, res) => {
+  res.render('about')
+})
+
 module.exports = router
 

@@ -18,5 +18,32 @@ services:
     container_name: "node"
     ports:
       - 3000:3000
+    depends_on:
+      - db
+    networks:
+      - rete
 
 
+  #prog-db:
+  #  image: mysql:8.0.28
+  #  environment:
+  #    MYSQL_DATABASE: 'storybooks'
+  #    MYSQL_ROOT_PASSWORD: '$StoryBooks1'
+  #  ports:
+  #    - '3306:3306'
+  #  expose:
+  #    - '3306'
+
+  db:
+    container_name: mongo
+    image: mongo
+    volumes:
+      - ./mongo/data:/data/db
+    ports:
+      - "27017:27017" 
+    networks:
+      - rete
+
+
+networks:
+  rete:

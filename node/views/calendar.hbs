@@ -24,8 +24,10 @@ Events in your calendar
 <h3>
 
     <!--Add buttons to initiate auth sequence and sign out-->
-    <button id="authorize_button" onclick="handleAuthClick()">Authorize</button>
-    <button id="signout_button" onclick="handleSignoutClick()">Sign Out</button>
+    {{!-- <button id="authorize_button" onclick="handleAuthClick()">Authorize</button>
+    <button id="signout_button" onclick="handleSignoutClick()">Sign Out</button> --}}
+    <button id="create_event_button" onclick="listUpcomingEvents()">Create Event</button>
+    <button id="list_events_button" onclick="createEvent()">See Events</button>
 
     <pre id="content" style="white-space: pre-wrap;"></pre>
 
@@ -164,6 +166,45 @@ Events in your calendar
             (str, event) => `${str}${event.summary} (${event.start.dateTime || event.start.date})\n`,
             'Events:\n');
         document.getElementById('content').innerText = output;
+      }
+      async function createEvent(){
+const event = {
+  'summary': 'Google I/O 2015',
+  'location': '800 Howard St., San Francisco, CA 94103',
+  'description': 'A chance to hear more about Google\'s developer products.',
+  'start': {
+    'dateTime': '2015-05-28T09:00:00-07:00',
+    'timeZone': 'America/Los_Angeles'
+  },
+  'end': {
+    'dateTime': '2015-05-28T17:00:00-07:00',
+    'timeZone': 'America/Los_Angeles'
+  },
+  'recurrence': [
+    'RRULE:FREQ=DAILY;COUNT=2'
+  ],
+  'attendees': [
+    {'email': 'lpage@example.com'},
+    {'email': 'sbrin@example.com'}
+  ],
+  'reminders': {
+    'useDefault': false,
+    'overrides': [
+      {'method': 'email', 'minutes': 24 * 60},
+      {'method': 'popup', 'minutes': 10}
+    ]
+  }
+};
+
+const request = gapi.client.calendar.events.insert({
+  'calendarId': 'primary',
+  'resource': event
+});
+
+request.execute(function(event) {
+  appendPre('Event created: ' + event.htmlLink);
+});
+
       }
     </script>
     <script async defer src="https://apis.google.com/js/api.js" onload="gapiLoaded()"></script>

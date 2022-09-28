@@ -21,6 +21,8 @@ require('./config/passport')(passport)
 //mi connetto al database
 connectDB()
 
+//mi connetto al database container
+connectDbCont()
 
 const app = express()
 
@@ -61,6 +63,7 @@ const {
     editIcon,
     select
   } = require('./helpers/hbs')
+const connectDbCont = require('./config/dbContainer')
 
 
 
@@ -112,6 +115,11 @@ app.use('/auth', require('./routes/auth'))
 app.use('/stories', require('./routes/stories'))
 app.use('/calendar', require('./routes/calendar'))
 app.use('/news', require('./routes/news'))
+app.use('/news', require('./routes/about'))
+
+
+
+
 
 
 
