@@ -8,17 +8,17 @@ progetto di reti di calcolatori.
 # REQUISITI 
 1) API OAUTH: 
    * GOOGLE OAUTH: per effettuare login (con google);
-2) API commerciali/terze parti:
+2/3) API commerciali/terze parti:
    * STORIES API: per ottenere le prime 40 news mondiali;
    * GOOGLE CALENDAR: per vedere gli eventi sul calendario e/o settarli;
-3) docker:
+4) docker:
    * Docker: utilizzato per la creazione della Web App su più container e per l'automazione del processo di lancio;
-4) Git ed Read.me:
+5) Git ed Read.me:
    * README.md: utilizzato per illustrare i punti fondamentali del progetto (scopo del progetto, tecnologie utilizzate ecc.);
    * GitHub: utilizzato per condividere i file e permettere al gruppo di lavorare allo stesso progetto contemporaneamente;
-5) CI/CD:
+6) CI/CD:
     * effettuato tramite GitHub actions (in particolare usando github desktop);
-6) SICUREZZA:
+7) SICUREZZA:
    * Self-signed Certificate: utilizzati per ottenere una connessione sicura basata su https;
 
 # EXPLANATION OF THE WEBSITE
