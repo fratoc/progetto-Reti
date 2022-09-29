@@ -1,3 +1,6 @@
+# IMMAGINE RIASSUNTIVA
+![img_git](https://user-images.githubusercontent.com/89547373/193157253-35c97d7e-d258-4729-8b8c-b59e6c85554b.png)
+
 # progetto-Reti
 progetto di reti di calcolatori.
 
