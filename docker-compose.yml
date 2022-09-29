@@ -18,10 +18,10 @@ services:
     container_name: "node"
     ports:
       - 3000:3000
-    depends_on:
-      - db
-    networks:
-      - rete
+ #   depends_on:
+  #    - db
+   # networks:
+    #  - rete
 
 
   #prog-db:
@@ -34,16 +34,16 @@ services:
   #  expose:
   #    - '3306'
 
-  db:
-    container_name: mongo
-    image: mongo
-    volumes:
-      - ./mongo/data:/data/db
-    ports:
-      - "27017:27017" 
-    networks:
-      - rete
+#  db:
+#    container_name: mongo
+ #   image: mongo
+  #  volumes:
+   #   - ./mongo/data:/data/db
+#    ports:
+ #     - "27017:27017" 
+  #  networks:
+   #   - rete
 
 
-networks:
-  rete:
+#networks:
+ # rete:

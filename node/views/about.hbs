@@ -17,11 +17,12 @@
   </form>
   <h4>Items:</h4>
   <ul>
-    <% items.forEach(function(item) { %>
-      <li>
-        <%= item.name %>
-      </li>
-      <% }); %>
+    <script>
+      {{{items}}}.forEach(function(item) { 
+        console.log(item.name)
+         
+       }) 
+       </script>
   </ul>
 </body>
 

@@ -5,6 +5,12 @@
         background-image: url(https://www.panorama.it/media-library/blog.jpg?id=20545796&width=300);
         background-size: 8%;
     }
+    .events{
+        width: 100%;
+        height: 100%;
+        background-image: url(https://www.pixelstalk.net/wp-content/uploads/2016/09/All-White-Background-for-Desktop.jpg);
+        background-size: 8%;
+    }
 </style>
 
 <br>
@@ -26,10 +32,17 @@ Events in your calendar
     <!--Add buttons to initiate auth sequence and sign out-->
     {{!-- <button id="authorize_button" onclick="handleAuthClick()">Authorize</button>
     <button id="signout_button" onclick="handleSignoutClick()">Sign Out</button> --}}
-    <button id="create_event_button" onclick="listUpcomingEvents()">Create Event</button>
-    <button id="list_events_button" onclick="createEvent()">See Events</button>
+    <form action="" method="get">
+      <input type="text" name="Descrizione" id="nome_evento">
+      <input type="date" name="Data" id="data_evento">
+      <input id="create_event_button" type="submit" value="Create event" onclick="beforeCreate()">
+    </form>
+    {{!-- <button id="create_event_button" onclick="beforeCreate()">Create Event</button> --}}
+    <button id="list_events_button" onclick="handleAuthClick()">My events</button>
 
-    <pre id="content" style="white-space: pre-wrap;"></pre>
+    <div class="events">
+      <pre id="content" style="white-space: pre-wrap;"></pre>
+    </div>
 
     <script type="text/javascript">
       /* exported gapiLoaded */
@@ -46,14 +59,12 @@ Events in your calendar
 
       // Authorization scopes required by the API; multiple scopes can be
       // included, separated by spaces.
-      const SCOPES = 'https://www.googleapis.com/auth/calendar.readonly';
+      const SCOPES = 'https://www.googleapis.com/auth/calendar';
 
       let tokenClient;
       let gapiInited = false;
       let gisInited = false;
 
-      document.getElementById('authorize_button').style.visibility = 'hidden';
-      document.getElementById('signout_button').style.visibility = 'hidden';
 
       /**
        * Callback after api.js is loaded.
@@ -93,7 +104,8 @@ Events in your calendar
        */
       function maybeEnableButtons() {
         if (gapiInited && gisInited) {
-          document.getElementById('authorize_button').style.visibility = 'visible';
+          document.getElementById('create_event_button').style.visibility = 'visible';
+          document.getElementById('list_events_button').style.visibility = 'visible';
         }
       }
 
@@ -105,8 +117,7 @@ Events in your calendar
           if (resp.error !== undefined) {
             throw (resp);
           }
-          document.getElementById('signout_button').style.visibility = 'visible';
-          document.getElementById('authorize_button').innerText = 'Refresh';
+          document.getElementById('list_events_button').innerText = 'Refresh';
           await listUpcomingEvents();
         };
 
@@ -129,8 +140,7 @@ Events in your calendar
           google.accounts.oauth2.revoke(token.access_token);
           gapi.client.setToken('');
           document.getElementById('content').innerText = '';
-          document.getElementById('authorize_button').innerText = 'Authorize';
-          document.getElementById('signout_button').style.visibility = 'hidden';
+          document.getElementById('list_events_button').innerText = 'My events';
         }
       }
 
@@ -167,45 +177,55 @@ Events in your calendar
             'Events:\n');
         document.getElementById('content').innerText = output;
       }
-      async function createEvent(){
-const event = {
-  'summary': 'Google I/O 2015',
-  'location': '800 Howard St., San Francisco, CA 94103',
-  'description': 'A chance to hear more about Google\'s developer products.',
-  'start': {
-    'dateTime': '2015-05-28T09:00:00-07:00',
-    'timeZone': 'America/Los_Angeles'
-  },
-  'end': {
-    'dateTime': '2015-05-28T17:00:00-07:00',
-    'timeZone': 'America/Los_Angeles'
-  },
-  'recurrence': [
-    'RRULE:FREQ=DAILY;COUNT=2'
-  ],
-  'attendees': [
-    {'email': 'lpage@example.com'},
-    {'email': 'sbrin@example.com'}
-  ],
-  'reminders': {
-    'useDefault': false,
-    'overrides': [
-      {'method': 'email', 'minutes': 24 * 60},
-      {'method': 'popup', 'minutes': 10}
-    ]
-  }
-};
 
-const request = gapi.client.calendar.events.insert({
-  'calendarId': 'primary',
-  'resource': event
-});
+      function beforeCreate(){
+        tokenClient.callback = async (resp) => {
+          if (resp.error !== undefined) {
+            throw (resp);
+          }
+          var nome = document.getElementById('nome_evento');
+          var data = document.getElementById('data_evento');
+          createCalendarEvent(nome, data);
+        }
 
-request.execute(function(event) {
-  appendPre('Event created: ' + event.htmlLink);
-});
+        if (gapi.client.getToken() === null) {
+          // Prompt the user to select a Google Account and ask for consent to share their data
+          // when establishing a new session.
+          tokenClient.requestAccessToken({prompt: 'consent'});
+        } else {
+          // Skip display of account chooser and consent dialog for an existing session.
+          tokenClient.requestAccessToken({prompt: ''});
+        }
+      }
+
+
+      function createCalendarEvent(nome,data){
+        const event = {
+          'summary': nome,
+          'location': '800 Howard St., San Francisco, CA 94103',
+          'description': 'Ricorda di mettere una storia.',
+          'start': {
+            'dateTime': data,
+            'timeZone': 'America/Los_Angeles'
+          },
+          'end': {
+            'dateTime': data,
+            'timeZone': 'America/Los_Angeles'
+          }
+        }
+
+        const request = gapi.client.calendar.events.insert({
+          'calendarId': 'primary',
+          'resource': event
+        })
+
+        request.execute(function(event) {
+          //appendPre
+          console.log('Event created: ' + event.htmlLink);
+        });
 
       }
+
     </script>
     <script async defer src="https://apis.google.com/js/api.js" onload="gapiLoaded()"></script>
     <script async defer src="https://accounts.google.com/gsi/client" onload="gisLoaded()"></script>

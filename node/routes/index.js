@@ -44,7 +44,10 @@ router.get('/news', (req, res) => {
 // @desc    About Us section
 // @route   GET /about
 router.get('/about', (req, res) => {
-  res.render('about')
+  Item.find()
+    .then(items => res.render('about', { items }))
+    .catch(err => res.status(404).json({ msg: 'No items found' }));
+  //res.render('about')
 })
 
 module.exports = router

@@ -6,6 +6,7 @@ const morgan = require('morgan') //per login
 const exphbs = require('express-handlebars')
 const passport = require('passport')
 const connectDB = require('./config/db')
+const connectDbCont = require('./config/dbContainer')
 const session = require('express-session')
 const MongoStore = require('connect-mongo') //per aggiornare dashboard senza essere buttato alla '/'
 const methodOverride = require('method-override')
@@ -22,7 +23,7 @@ require('./config/passport')(passport)
 connectDB()
 
 //mi connetto al database container
-connectDbCont()
+//connectDbCont()
 
 const app = express()
 
@@ -63,7 +64,7 @@ const {
     editIcon,
     select
   } = require('./helpers/hbs')
-const connectDbCont = require('./config/dbContainer')
+
 
 
 
@@ -118,9 +119,22 @@ app.use('/news', require('./routes/news'))
 app.use('/news', require('./routes/about'))
 
 
+//Items
+const Item = require('./models/Item');
 
+/* app.get('/', (req, res) => {
+  Item.find()
+    .then(items => res.render('index', { items }))
+    .catch(err => res.status(404).json({ msg: 'No items found' }));
+}); */
 
+/* app.post('/item/add', (req, res) => {
+  const newItem = new Item({
+    name: req.body.name
+  });
 
+  newItem.save().then(item => res.redirect('/about'))
+}) */
 
 
 
