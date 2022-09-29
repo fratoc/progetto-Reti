@@ -32,10 +32,10 @@ Events in your calendar
     <!--Add buttons to initiate auth sequence and sign out-->
     {{!-- <button id="authorize_button" onclick="handleAuthClick()">Authorize</button>
     <button id="signout_button" onclick="handleSignoutClick()">Sign Out</button> --}}
-    <form action="" method="get">
+    <form action="" method="get" onsubmit="event.preventDefault(); beforeCreate();">
       <input type="text" name="Descrizione" id="nome_evento">
-      <input type="date" name="Data" id="data_evento">
-      <input id="create_event_button" type="submit" value="Create event" onclick="beforeCreate()">
+      <input type="datetime-local" name="Data" id="data_evento">
+      <input id="create_event_button" type="submit" value="Create event">
     </form>
     {{!-- <button id="create_event_button" onclick="beforeCreate()">Create Event</button> --}}
     <button id="list_events_button" onclick="handleAuthClick()">My events</button>
@@ -183,8 +183,11 @@ Events in your calendar
           if (resp.error !== undefined) {
             throw (resp);
           }
-          var nome = document.getElementById('nome_evento');
-          var data = document.getElementById('data_evento');
+          var nome = document.getElementById('nome_evento').value;
+          var data = document.getElementById('data_evento').value;
+          data=data+':00-00';
+          console.log(nome);
+          console.log(data);
           createCalendarEvent(nome, data);
         }
 
@@ -196,6 +199,7 @@ Events in your calendar
           // Skip display of account chooser and consent dialog for an existing session.
           tokenClient.requestAccessToken({prompt: ''});
         }
+        return true;
       }
 
 

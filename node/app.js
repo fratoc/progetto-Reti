@@ -22,9 +22,6 @@ require('./config/passport')(passport)
 //mi connetto al database
 connectDB()
 
-//mi connetto al database container
-//connectDbCont()
-
 const app = express()
 
 
@@ -116,37 +113,6 @@ app.use('/auth', require('./routes/auth'))
 app.use('/stories', require('./routes/stories'))
 app.use('/calendar', require('./routes/calendar'))
 app.use('/news', require('./routes/news'))
-app.use('/news', require('./routes/about'))
-
-
-//Items
-const Item = require('./models/Item');
-
-/* app.get('/', (req, res) => {
-  Item.find()
-    .then(items => res.render('index', { items }))
-    .catch(err => res.status(404).json({ msg: 'No items found' }));
-}); */
-
-/* app.post('/item/add', (req, res) => {
-  const newItem = new Item({
-    name: req.body.name
-  });
-
-  newItem.save().then(item => res.redirect('/about'))
-}) */
-
-
-
-/* hhttps */
-/*
-const server = https.createServer({
-  key: fs.readFileSync('security/key.pem'),
-  cert: fs.readFileSync('security/cert.pem')
-}, app);
-
-server.addListener('upgrade',(req, res, head) => console.log('UPGRADE:', req.url));
-*/
 
 
 const PORT = process.env.PORT || 3000
