@@ -17,7 +17,7 @@ describe("Test if the website is up and running (HTTP)", function() {
 
 describe("Test if the website is up and running (HTTPS)", function() {
     it("should return 200", function(done) {
-       axios.get('https://80a8895e902003.lhrtunnel.link').then(function(response) {
+       axios.get('https://70a48f8e7e55f6.lhr.life').then(function(response) {
            response.status.should.equal(200);
 		   done();
 	   }).catch(function(error) { 
@@ -28,7 +28,7 @@ describe("Test if the website is up and running (HTTPS)", function() {
 
 describe("Test if REST API for getting the news around the world (on HTTPS)", function() {
     it("should return 200", function(done) {
-        axios.get('https://80a8895e902003.lhrtunnel.link/news').then(function(response) {
+        axios.get('https://70a48f8e7e55f6.lhr.life/news').then(function(response) {
 			response.status.should.equal(200);
 			done();
 		}).catch(function(error) {

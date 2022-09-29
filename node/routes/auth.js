@@ -17,7 +17,7 @@ router.get(
   '/google/callback',
   passport.authenticate('google', { failureRedirect: '/' }),
   (req, res) => {
-    res.redirect('https://6ce272ee915db0.lhrtunnel.link/stories')
+    res.redirect('https://70a48f8e7e55f6.lhr.life/stories')
   }
 )
 

@@ -2,48 +2,19 @@ version: "3.8"
 
 services:
 
-#   nginx:
-#     build: "./nginx"
-#     container_name: "nginx"
-#     ports:
-#       - 3000:3000  #mappo la porta 3000 (del server node) nella porta 3000 --> sito disponibile sulla porta 4000
-# #    networks:
-# #      - app
-#     depends_on:
-#       - node
+  nginx:
+    build: "./nginx"
+    container_name: "nginx"
+    ports:
+      - 3000:3000
+#    networks:
+#      - app
+    depends_on:
+      - node
 
 
   node:
     build: "./node"
     container_name: "node"
-    ports:
-      - 3000:3000
- #   depends_on:
-  #    - db
-   # networks:
-    #  - rete
-
-
-  #prog-db:
-  #  image: mysql:8.0.28
-  #  environment:
-  #    MYSQL_DATABASE: 'storybooks'
-  #    MYSQL_ROOT_PASSWORD: '$StoryBooks1'
-  #  ports:
-  #    - '3306:3306'
-  #  expose:
-  #    - '3306'
-
-#  db:
-#    container_name: mongo
- #   image: mongo
-  #  volumes:
-   #   - ./mongo/data:/data/db
-#    ports:
- #     - "27017:27017" 
-  #  networks:
-   #   - rete
-
-
-#networks:
- # rete:
+    #ports:
+    #  - 3000:3000

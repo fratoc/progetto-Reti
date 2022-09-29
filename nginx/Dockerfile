@@ -1,2 +1,3 @@
-FROM nginx
-COPY ./default.conf /etc/nginx/conf.d/
+FROM nginx:latest
+COPY ./nginx.conf /etc/nginx/nginx.conf
+EXPOSE 3000
